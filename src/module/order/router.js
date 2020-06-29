@@ -25,11 +25,7 @@ router.get("/report", async (req, res, next) => {
   const products = await findAll({
     createdAt: {
       $gte: new Date(
-        new Date(req.query.month + "/1" + "/" + req.query.year).setHours(
-          00,
-          00,
-          00
-        )
+        new Date(req.query.month + "/1" + "/" + req.query.year).setHours('00', '00', '00')
       ),
       $lt: new Date(
         new Date(req.query.month + "/30" + "/" + req.query.year).setHours(

@@ -31,28 +31,28 @@ const getAll = async (paran) => {
   console.log('as',new Date(new Date(paran.month+'/30'+'/'+paran.year).setHours(23, 59, 59)))
 
   // return {}
-  const order= await OrderSuplier.find({createdAt:{ $gte: new Date(new Date(paran.month+'/1'+'/'+paran.year).setHours(00, 00, 00)),
+  const order= await OrderSuplier.find({createdAt:{ $gte: new Date(new Date(paran.month+'/1'+'/'+paran.year).setHours('00', '00', '00')),
     $lt: new Date(new Date(paran.month+'/30'+'/'+paran.year).setHours(23, 59, 59))}})
     .populate('suplierId')
     .populate("employee");
-const unique= [...new Set(order.map(item=>item.suplierId._id))]
+  const unique= [...new Set(order.map(item=>item.suplierId._id))]
 
-    return report = unique.map(item=>{
-      let name=""
-      let count=0
-      let totalPrice=0
-      order.map(_item=>{
-        if(_item.suplierId._id===item){
-          name=_item.suplierId.name?_item.suplierId.name:name;
-          count+=_item.products?_item.products.length:0;
-          totalPrice+=_item.totalPrice?_item.totalPrice:0
+  return report = unique.map(item=>{
+    let name=""
+    let count=0
+    let totalPrice=0
+    order.map(_item=>{
+      if(_item.suplierId._id===item){
+        name=_item.suplierId.name?_item.suplierId.name:name;
+        count+=_item.products?_item.products.length:0;
+        totalPrice+=_item.totalPrice?_item.totalPrice:0
 
-        } 
-       
-      })
+      }
 
-      return {name,numberProductOrder:count,totalPrice}
     })
+
+    return {name,numberProductOrder:count,totalPrice}
+  })
 };
 
 const findOne = async id => {
