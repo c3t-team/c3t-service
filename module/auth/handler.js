@@ -1,23 +1,21 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+const jwt = require('jsonwebtoken')
+const { secret, expiresIn } = require('../config').tokenConfig
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+const makeAuthenResponse = (user) => {
+  const role=user.role.length>0?user.role:['customer'] 
+  const token = jwt.sign({
+    email: user.email,
+    id: user._id,
+    role
+  },
+  secret, { expiresIn: expiresIn })
+  const response = {
+    email: user.email, 
+    token: token,
+    id:user._id,
+    role
+  }
+  return response
+}
 
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+module.exports = {makeAuthenResponse}
